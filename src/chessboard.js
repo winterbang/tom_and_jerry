@@ -1,4 +1,4 @@
-import { fillRoundRect } from '../lib/index'
+import { fillRoundRect, index2ij } from '../lib/index'
 const screenWidth  = window.innerWidth
 const screenHeight = window.innerHeight
 const Margin  = 10
@@ -8,7 +8,12 @@ const PaddingTop = (screenHeight-Width*4)/2
 const BACKGROUND_COLOR = '#ddd5ca'
 
 export default class Chessboard {
-
+  // style = {
+  //   top: 20,
+  //   margin: 10,
+  //   padding: 10,
+  //   background: "#bbaba0"
+  // }
   constructor(rowNum, columnNum, style={}) {
     this.rowNum = rowNum || 5
     this.columnNum = columnNum || 5
@@ -45,14 +50,23 @@ export default class Chessboard {
 
   }
 
+  // 设置每个交叉点的坐标
   setCrosses () {
-    this.crosses = []
+    this.crosses = [[null, null, null, null, null], [null, null, null, null, null], [null, null, null, null, null], [null, null, null, null, null], [null, null, null, null, null]] //[...Array(rowNum)].map((v,k) =>[])
     let { rowNum, columnNum, padding, margin} = this
-    for( let i=1; i <= rowNum*columnNum; i++ ) {
-      let index = [parseInt((i - 1) / 5), (i - 1) % 5]
-      let x = index[1] * Width + padding + margin
-      let y = index[0] * Width + PaddingTop
-      this.crosses.push([x, y])
+    for( let i=0; i < rowNum*columnNum; i++ ) {
+      let ij = index2ij(i)
+      // console.log(ij)
+      // let i = parseInt((i - 1) / 5)
+      // let j = (i - 1) % 5
+      let x = ij[1] * Width + padding + margin
+      let y = ij[0] * Width + PaddingTop
+      this.crosses[ij[0]][ij[1]] = [x, y]
     }
   }
+
+  // update() {
+  //   databus.chessboard[ij[0]][ij[1]] = pickedChessman // 更新棋盘的当前棋局
+  //   databus.chessboard
+  // }
 }
