@@ -55,7 +55,10 @@ export default class Main {
       let pickedChessman = databus.pickedChessman
       if (!pickedChessman) return
       let ij = this.xy2ij(pickedChessman.x, pickedChessman.y)
-      if(ij && !databus.chessboard[ij[0]][ij[1]]) {
+      //  检查新位置是否符合规则
+      // let orgIJ = databus.pickedChessmanij
+
+      if(ij && !databus.chessboard[ij[0]][ij[1]] && databus.canMoved(ij)) {
         // 目标位置在棋盘上，并且当前位置没有对象则更新棋局
         let xy = this.chessboard.crosses[ij[0]][ij[1]] // 获取目标位置的坐标
         databus.pickedChessman.updateXY(xy[0], xy[1])  // 更新所移动棋子的坐标到目标位置的坐标

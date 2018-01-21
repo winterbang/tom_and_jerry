@@ -55,7 +55,7 @@ export default class Chessman {
   }
 
   area() {
-    let { x, y, r } = this 
+    let { x, y, r } = this
     return {
       startX: x - r,
       startY: y - r,
@@ -63,4 +63,5 @@ export default class Chessman {
       endY: y + r
     }
   }
+
 }

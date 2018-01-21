@@ -59,4 +59,15 @@ export default class Databus {
     this.chessboard[orgij[0]][orgij[1]] = null
     this.pickedChessmanij = ij
   }
+
+  canMoved (ij) {
+    if(this.chessboard[ij[0]][ij[1]]) return false
+
+    let currIJ = this.pickedChessmanij
+    let up = [currIJ[0]-1, currIJ[1]].join('')
+    let down = [currIJ[0]+1, currIJ[1]].join('')
+    let left = [currIJ[0], currIJ[1]-1].join('')
+    let right = [currIJ[0], currIJ[1]+1].join('')
+    return [up, down, left, right].indexOf(ij.join('')) > -1
+  }
 }
