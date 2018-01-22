@@ -1,6 +1,8 @@
 import { star5, index2ij } from '../lib/index.js'
 import Chessboard from './chessboard'
 import Chessman from './chessman'
+import Jerry from './jerry'
+import Tom from './tom'
 import Databus from './databus'
 
 const screenWidth  = window.innerWidth
@@ -36,7 +38,6 @@ export default class Main {
         databus.pickedChessman = databus.chessboard[ij[0]][ij[1]]
         databus.pickedChessmanij = ij
       }
-
     }).bind(this))
 
     canvas.addEventListener('touchmove', ((e) => {
@@ -55,11 +56,8 @@ export default class Main {
       let pickedChessman = databus.pickedChessman
       if (!pickedChessman) return
       let ij = this.xy2ij(pickedChessman.x, pickedChessman.y)
-      //  检查新位置是否符合规则
-      // let orgIJ = databus.pickedChessmanij
 
-      if(ij && !databus.chessboard[ij[0]][ij[1]] && databus.canMoved(ij)) {
-        // 目标位置在棋盘上，并且当前位置没有对象则更新棋局
+      if(ij && databus.canMoved(ij)) {
         let xy = this.chessboard.crosses[ij[0]][ij[1]] // 获取目标位置的坐标
         databus.pickedChessman.updateXY(xy[0], xy[1])  // 更新所移动棋子的坐标到目标位置的坐标
         databus.updateChessboard(ij)                   // 更新棋局
@@ -80,42 +78,22 @@ export default class Main {
 
   init () {
     this.chessboard.render(ctx)
-    let style1 = function (ctx, x, y) {
-      // ctx.beginPath()
-      // ctx.arc(x, y, 8, 0, 360, false)
-      // ctx.fillStyle = "red"
-      // ctx.fill()
-      ctx.textBaseline = "middle"
-      ctx.font = `${30}px serif`
-      ctx.textAlign =  "center"
-      ctx.fillStyle = '#756e64'
-      ctx.fillText('🐭', x, y)
-    }
     this.chessboard.crosses.slice(0, 3).forEach((crosses, i) => {
       crosses.forEach((cross, j) => {
-        let chessman = new Chessman(cross[0], cross[1], 20, 'black', style1)
-        chessman.render(ctx)
+        let jerry = new Jerry(cross[0], cross[1], 20, 'black')
+        jerry.render(ctx)
         // let ij = index2ij(idx)
-        databus.chessboard[i][j] = chessman
+        databus.chessboard[i][j] = jerry
       })
     })
 
-    let style2 = function (ctx, x, y) {
-      // star5(ctx, x, y, 15, 8)
-
-      ctx.textBaseline = "middle"
-      ctx.font = `${30}px serif`
-      ctx.textAlign =  "center"
-      ctx.fillStyle = '#756e64'
-      ctx.fillText('🐱', x, y)
-    }
     this.chessboard.crosses.slice(4, 5).forEach((crosses, idx) => {
       // console.log(crosses);
       crosses.slice(1, 4).forEach((cross, index) => {
-        let chessman = new Chessman(cross[0], cross[1], 25, 'white', style2)
-        chessman.render(ctx)
+        let tom = new Tom(cross[0], cross[1], 25, 'white')
+        tom.render(ctx)
         let j = crosses.indexOf(cross)
-        databus.chessboard[4][j] = chessman
+        databus.chessboard[4][j] = tom
       })
 
     })
@@ -125,13 +103,9 @@ export default class Main {
     let i = parseInt((y - Top + Height/2) / Height)
     let j = parseInt((x - Margin + Width/2) / Width)
     if (i < 0 || j < 0 || i > databus.chessboard.length-1) return null
-    // console.log(i,j, 'ij');
     let chessboard = databus.chessboard
-    // console.log(databus.chessboard, '==========');
-    // console.log(chessboard[i], 'databus.chessboard[i]');
 
     let chessman = chessboard[i][j]
-    // console.log(chessman, 'chessman');
     if (!chessman) return [i,j]
     let area = chessman.area()
 
@@ -151,13 +125,24 @@ export default class Main {
 
   render() {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
+    // 画棋盘
     this.chessboard.render(ctx)
+
+    // 计分
+    let jerryChessman = new Jerry(Margin+Padding+20, screenHeight-PaddingTop+Height, 20, 'black')
+    jerryChessman.render(ctx)
+    ctx.fillStyle = '#766e66'
+    ctx.font = "38px serif"
+    ctx.textBaseline = "middle"
+    ctx.textAlign =  "left"
+    ctx.fillText(` x ${databus.catchedJerries.length}`, Margin+Padding+20+20, screenHeight-PaddingTop+Height)
 
     databus.chessboard.forEach((row, idx) => {
       row.forEach((chessman, idx) => {
-        if(chessman) chessman.render(ctx)
+        if(chessman && chessman !=databus.pickedChessman) chessman.render(ctx)
       })
     })
+    if(databus.pickedChessman) databus.pickedChessman.render(ctx)
   }
 
   loop () {

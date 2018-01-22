@@ -52,7 +52,8 @@ export default class Chessboard {
 
   // 设置每个交叉点的坐标
   setCrosses () {
-    this.crosses = [[null, null, null, null, null], [null, null, null, null, null], [null, null, null, null, null], [null, null, null, null, null], [null, null, null, null, null]] //[...Array(rowNum)].map((v,k) =>[])
+    this.crosses = [[null, null, null, null, null], [null, null, null, null, null], [null, null, null, null, null], [null, null, null, null, null], [null, null, null, null, null]]
+    // this.crosses = [...Array(rowNum)].map((v,k) =>[null, null, null, null, null])
     let { rowNum, columnNum, padding, margin} = this
     for( let i=0; i < rowNum*columnNum; i++ ) {
       let ij = index2ij(i)
