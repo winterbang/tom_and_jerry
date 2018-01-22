@@ -34,10 +34,10 @@ export default class Chessman {
     let disY = y - r
 
     if ( disX < 0 )
-      disX = 0
+      disX = r
 
     else if ( disX > screenWidth - r*2 )
-      disX = screenWidth - r*2
+      disX = screenWidth - r
 
     if ( disY <= 0 )
       disY = 0
