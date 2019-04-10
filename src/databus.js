@@ -12,7 +12,7 @@ export default class Databus {
     instance = this
 
     // this.pool = new Pool()
-
+    this.iam = 'Tom'
     this.reset()
   }
 
@@ -46,7 +46,7 @@ export default class Databus {
   canMoved (ij) {
     // 如果是jerry并且目标位置有棋子
     let currIJ = this.pickedChessmanij
-    let isJerry = (this.pickedChessman.constructor == Jerry)
+    let isJerry = (this.pickedChessman.constructor.name == 'Jerry')
     // 目标位置有棋子时
     // 1.如果当前移动的棋子时jerry则不可移动
     // 2.如果是tom且中间隔着一个空位置，且目标位置是个jerry
@@ -64,14 +64,12 @@ export default class Databus {
       }
     }
 
-
     // 目标位置在当前选中棋子所在位置的上下左右,且该位置没有棋子
     let up = [currIJ[0]-1, currIJ[1]].join('')
     let down = [currIJ[0]+1, currIJ[1]].join('')
     let left = [currIJ[0], currIJ[1]-1].join('')
     let right = [currIJ[0], currIJ[1]+1].join('')
     return [up, down, left, right].indexOf(ij.join('')) > -1
-
 
   }
 

@@ -8,8 +8,8 @@
 		"newFeature": true
 	},
 	"compileType": "game",
-	"libVersion": "game",
-	"appid": "touristappid",
+	"libVersion": "2.0.8",
+	"appid": "wxc816a8fcbc6592ec",
 	"projectname": "tom_and_jerry",
 	"isGameTourist": true,
 	"condition": {

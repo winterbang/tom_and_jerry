@@ -1,5 +1,5 @@
 import Chessman from './chessman'
-export default class Tome extends Chessman {
+export default class Tom extends Chessman {
   constructor(x, y, r, color) {
 
     let style = function (ctx, x, y) {
@@ -10,7 +10,7 @@ export default class Tome extends Chessman {
       ctx.fillStyle = '#756e64'
       ctx.fillText('🐱', x, y)
     }
-    
+
     super(x, y, r, color, style)
   }
 

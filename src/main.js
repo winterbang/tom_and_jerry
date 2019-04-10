@@ -14,7 +14,6 @@ const Height= Width
 const PaddingTop = (screenHeight-Width*4)/2
 const Top = (screenHeight-Width*4 + Padding*2)/2
 
-
 let ctx = canvas.getContext('2d')
 let databus = new Databus()
 
@@ -26,7 +25,7 @@ export default class Main {
   }
 
   restart () {
-    this.init()
+    this.initChesses()
     canvas.addEventListener('touchstart', ((e) => {
       e.preventDefault()
 
@@ -34,7 +33,8 @@ export default class Main {
       let y = e.touches[0].clientY
 
       let ij = this.xy2ij(x, y)
-      if(ij && databus.chessboard[ij[0]][ij[1]]) {
+      let chessman = databus.chessboard[ij[0]][ij[1]]
+      if(ij && chessman && chessman.constructor.name == databus.iam) {
         databus.pickedChessman = databus.chessboard[ij[0]][ij[1]]
         databus.pickedChessmanij = ij
       }
@@ -70,13 +70,15 @@ export default class Main {
       }
     }).bind(this))
 
-    window.requestAnimationFrame(
+    let animationFrameNumber = window.requestAnimationFrame(
       this.loop.bind(this),
       canvas
     )
+    // console.log(animationFrameNumber)
   }
 
-  init () {
+  initChesses () {
+    // 初始化棋盘
     this.chessboard.render(ctx)
     this.chessboard.crosses.slice(0, 3).forEach((crosses, i) => {
       crosses.forEach((cross, j) => {
@@ -124,6 +126,7 @@ export default class Main {
   }
 
   render() {
+    // 清空画板
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     // 画棋盘
     this.chessboard.render(ctx)
